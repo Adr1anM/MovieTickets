@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Models;
 
@@ -24,7 +25,12 @@ namespace OnlineShop.Data
 
 
             base.OnModelCreating(modelBuilder);
+
+            Console.WriteLine();
         }
+         
+ 
+
 
         public DbSet<Actor> Actors { get; set; }
         public DbSet<Movie> Movies { get; set; }
