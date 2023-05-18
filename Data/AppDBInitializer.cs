@@ -1,4 +1,6 @@
 ﻿using OnlineShop.Models;
+using OnlineShop.Data.Enum;
+using System.Security.Cryptography.Xml;
 
 namespace OnlineShop.Data
 {
@@ -148,19 +150,195 @@ namespace OnlineShop.Data
                             StartDate = DateTime.Now.AddDays(1),
                             EndDate = DateTime.Now.AddDays(-2),
                             CinemaId =1,
+                            ProducerId = 1,
+                            MovieCategory = MovieCategory.Action,
+
+
+                        },
+
+                        new Movie()
+                        {
+                            Name = "Elden Ring",
+                            Description = "This is the Elden Ring movie description",
+                            Price = 40.68,
+                            ImageUrl  = "http://dotnethow.net/images/movies/movie-2.jpeg",
+                            StartDate = DateTime.Now.AddDays(6),
+                            EndDate = DateTime.Now.AddDays(-3),
+                            CinemaId =2,
+                            ProducerId = 2,
+                            MovieCategory = MovieCategory.Comedy,
+
+
+                        },
+                        new Movie()
+                        {
+                            Name = "Odissea",
+                            Description = "This is the Odissea movie description",
+                            Price = 98.12,
+                            ImageUrl  = "http://dotnethow.net/images/movies/movie-3.jpeg",
+                            StartDate = DateTime.Now.AddDays(-4),
+                            EndDate = DateTime.Now.AddDays(8),
+                            CinemaId =3,
+                            ProducerId = 3,
+                            MovieCategory = MovieCategory.Drama,
+
+
+                        },
+
+                        new Movie()
+                        {
+                            Name = "Runner",
+                            Description = "This is the Runner movie description",
+                            Price = 10.42,
+                            ImageUrl  = "http://dotnethow.net/images/movies/movie-4.jpeg",
+                            StartDate = DateTime.Now.AddDays(4),
+                            EndDate = DateTime.Now.AddDays(9),
+                            CinemaId =4,
+                            ProducerId = 4,
+                            MovieCategory = MovieCategory.Documentary,
+
+
+                        },
+                        new Movie()
+                        {
+                            Name = "Hobbit",
+                            Description = "This is the Hobbit movie description",
+                            Price = 65.05,
+                            ImageUrl  = "http://dotnethow.net/images/movies/movie-5.jpeg",
+                            StartDate = DateTime.Now.AddDays(-5),
+                            EndDate = DateTime.Now.AddDays(7),
+                            CinemaId =5,
+                            ProducerId = 5,
+                            MovieCategory = MovieCategory.Cartoon,
+
+                        },
+                        new Movie()
+                        {
+                            Name = "Batman",
+                            Description = "This is the Batman movie description",
+                            Price = 12.22,
+                            ImageUrl  = "http://dotnethow.net/images/movies/movie-6.jpeg",
+                            StartDate = DateTime.Now.AddDays(-9),
+                            EndDate = DateTime.Now.AddDays(3),
+                            CinemaId =6,
+                            ProducerId = 6,
+                            MovieCategory = MovieCategory.Horror,
+
                         }
 
-
-
-                    }) ; 
-
-
+                    }) ;
+                    context.SaveChanges();
 
                 }
                 //Actors_Movies
                 if (!context.Actors_Movies.Any())
                 {
+                    context.AddRange(new List<Actor_Movie>()
+                    {
+                        new Actor_Movie()
+                        {
+                            AcotorId = 1,
+                            MovieId = 1
 
+                        },
+                        new Actor_Movie()
+                        {
+                            AcotorId = 1,
+                            MovieId = 3
+
+                        },
+                        new Actor_Movie()
+                        {
+                            AcotorId = 2,
+                            MovieId = 1
+
+                        },
+                        new Actor_Movie()
+                        {
+                            AcotorId = 2,
+                            MovieId = 4
+
+                        },
+                        new Actor_Movie()
+                        {
+                            AcotorId = 3,
+                            MovieId = 1
+
+                        },
+                        new Actor_Movie()
+                        {
+                            AcotorId = 3,
+                            MovieId = 2
+
+                        },
+                        new Actor_Movie()
+                        {
+                            AcotorId = 3,
+                            MovieId = 5
+
+                        },
+                        new Actor_Movie()
+                        {
+                            AcotorId = 4,
+                            MovieId = 2
+
+                        },
+                        new Actor_Movie()
+                        {
+                            AcotorId = 4,
+                            MovieId = 3
+
+                        },
+                        new Actor_Movie()
+                        {
+                            AcotorId = 4,
+                            MovieId = 4
+
+                        },
+                        new Actor_Movie()
+                        {
+                            AcotorId = 5,
+                            MovieId = 2
+
+                        },
+                        new Actor_Movie()
+                        {
+                            AcotorId = 5,
+                            MovieId = 3
+
+                        },
+                        new Actor_Movie()
+                        {
+                            AcotorId = 5,
+                            MovieId = 4
+
+                        },
+                        new Actor_Movie()
+                        {
+                            AcotorId = 5,
+                            MovieId = 5
+
+                        },
+                        new Actor_Movie()
+                        {
+                            AcotorId = 6,
+                            MovieId = 3
+
+                        },
+                        new Actor_Movie()
+                        {
+                            AcotorId = 6,
+                            MovieId = 4
+
+                        },
+                        new Actor_Movie()
+                        {
+                            AcotorId = 6,
+                            MovieId = 5
+
+                        }
+                    });
+                    context.SaveChanges();
 
                 }
             }

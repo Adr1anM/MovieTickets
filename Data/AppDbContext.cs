@@ -26,7 +26,6 @@ namespace OnlineShop.Data
 
             base.OnModelCreating(modelBuilder);
 
-            Console.WriteLine();
         }
          
  
