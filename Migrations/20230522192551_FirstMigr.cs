@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OnlineShop.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstMigration : Migration
+    public partial class FirstMigr : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,9 +17,9 @@ namespace OnlineShop.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProfilePicture = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Bio = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ProfilePicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Bio = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -32,9 +32,9 @@ namespace OnlineShop.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Logo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Logo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -47,9 +47,9 @@ namespace OnlineShop.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProfilePicture = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Bio = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ProfilePicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Bio = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -62,15 +62,15 @@ namespace OnlineShop.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MovieCategory = table.Column<int>(type: "int", nullable: false),
-                    CinemaId = table.Column<int>(type: "int", nullable: false),
-                    ProducerId = table.Column<int>(type: "int", nullable: false)
+                    CinemaId = table.Column<int>(type: "int", nullable: true),
+                    ProducerId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -79,14 +79,12 @@ namespace OnlineShop.Migrations
                         name: "FK_Movies_Cinemas_CinemaId",
                         column: x => x.CinemaId,
                         principalTable: "Cinemas",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Movies_Producers_ProducerId",
                         column: x => x.ProducerId,
                         principalTable: "Producers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -94,14 +92,14 @@ namespace OnlineShop.Migrations
                 columns: table => new
                 {
                     MovieId = table.Column<int>(type: "int", nullable: false),
-                    AcotorId = table.Column<int>(type: "int", nullable: false)
+                    ActorId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Actors_Movies", x => new { x.MovieId, x.AcotorId });
+                    table.PrimaryKey("PK_Actors_Movies", x => new { x.MovieId, x.ActorId });
                     table.ForeignKey(
-                        name: "FK_Actors_Movies_Actors_AcotorId",
-                        column: x => x.AcotorId,
+                        name: "FK_Actors_Movies_Actors_ActorId",
+                        column: x => x.ActorId,
                         principalTable: "Actors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -114,9 +112,9 @@ namespace OnlineShop.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Actors_Movies_AcotorId",
+                name: "IX_Actors_Movies_ActorId",
                 table: "Actors_Movies",
-                column: "AcotorId");
+                column: "ActorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Movies_CinemaId",

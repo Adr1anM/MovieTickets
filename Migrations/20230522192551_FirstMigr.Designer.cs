@@ -12,8 +12,8 @@ using OnlineShop.Data;
 namespace OnlineShop.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230513053529_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20230522192551_FirstMigr")]
+    partial class FirstMigr
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,15 +34,12 @@ namespace OnlineShop.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Bio")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FullName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProfilePicture")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -55,12 +52,12 @@ namespace OnlineShop.Migrations
                     b.Property<int>("MovieId")
                         .HasColumnType("int");
 
-                    b.Property<int>("AcotorId")
+                    b.Property<int>("ActorId")
                         .HasColumnType("int");
 
-                    b.HasKey("MovieId", "AcotorId");
+                    b.HasKey("MovieId", "ActorId");
 
-                    b.HasIndex("AcotorId");
+                    b.HasIndex("ActorId");
 
                     b.ToTable("Actors_Movies");
                 });
@@ -74,15 +71,12 @@ namespace OnlineShop.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Logo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -98,31 +92,28 @@ namespace OnlineShop.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CinemaId")
+                    b.Property<int?>("CinemaId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("MovieCategory")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int>("ProducerId")
+                    b.Property<int?>("ProducerId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
@@ -146,15 +137,12 @@ namespace OnlineShop.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Bio")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FullName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProfilePicture")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -166,7 +154,7 @@ namespace OnlineShop.Migrations
                 {
                     b.HasOne("OnlineShop.Models.Actor", "Actor")
                         .WithMany("Actors_Movies")
-                        .HasForeignKey("AcotorId")
+                        .HasForeignKey("ActorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -185,15 +173,11 @@ namespace OnlineShop.Migrations
                 {
                     b.HasOne("OnlineShop.Models.Cinema", "Cinema")
                         .WithMany("Movies")
-                        .HasForeignKey("CinemaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CinemaId");
 
                     b.HasOne("OnlineShop.Models.Producer", "Producer")
                         .WithMany("Movies")
-                        .HasForeignKey("ProducerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProducerId");
 
                     b.Navigation("Cinema");
 
