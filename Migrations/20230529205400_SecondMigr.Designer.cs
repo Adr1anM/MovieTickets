@@ -12,7 +12,7 @@ using OnlineShop.Data;
 namespace OnlineShop.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230523150016_SecondMigr")]
+    [Migration("20230529205400_SecondMigr")]
     partial class SecondMigr
     {
         /// <inheritdoc />

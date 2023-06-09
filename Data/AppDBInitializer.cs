@@ -24,14 +24,14 @@ namespace OnlineShop.Data
                         new Cinema()
                         {
                             Name = "Cinema1",
-                            Logo = "http://dotnethow.net./images/cinemas/cinema-1.jpeg",
+                            Logo = "https://thumbs.dreamstime.com/z/abstract-cinema-lor-template-isolated-white-background-79853753.jpg",
                             Description = "This is the discription of the first cinema"
                         },
                         new Cinema()
                         {
                             Name = "Cinema2",
-                            Logo = "http://dotnethow.net./images/cinemas/cinema-2.jpeg",
-                            Description = "This is the discription of the second cinema"
+                            Logo = "https://img.freepik.com/premium-vector/cinema-logo-with-popcorn_23-2147494040.jpg",
+                            Description = "This is the discription of the second cinemA"
                         },
                         new Cinema()
                         {
