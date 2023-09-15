@@ -41,9 +41,9 @@ namespace OnlineShop.Data.Services
 
         public async Task<Actor> Update(int id, Actor newActor)
         {
-            _context.Update(newActor);
-            await _context.SaveChangesAsync();
-            return newActor;
+                _context.Update(newActor);
+                await _context.SaveChangesAsync();
+                return newActor;
         }
 
       

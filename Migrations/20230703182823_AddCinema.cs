@@ -5,7 +5,7 @@
 namespace OnlineShop.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedCinemas : Migration
+    public partial class AddCinema : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,7 +16,7 @@ namespace OnlineShop.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-        
+
         }
     }
 }

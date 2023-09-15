@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using NuGet.Common;
 using OnlineShop.Data;
+using OnlineShop.Data.Base;
 using OnlineShop.Data.Services;
 using OnlineShop.Models;
 
@@ -9,9 +10,9 @@ namespace OnlineShop.Controllers
 {
     public class ActorsController : Controller
     {
-        private readonly IActorsService _service;
+        private readonly IGenericRepository<Actor> _service;
 
-        public ActorsController(IActorsService service)
+        public ActorsController(IGenericRepository<Actor> service)
         {
             _service = service;
 
@@ -26,7 +27,7 @@ namespace OnlineShop.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("FullName,ProfilePicture,Bio")]Actor actor)
+        public  IActionResult Create([Bind("FullName,ProfilePicture,Bio")]Actor actor)
         {
             if (!ModelState.IsValid)
             {
@@ -53,7 +54,7 @@ namespace OnlineShop.Controllers
             var actorDetails = await _service.GetById(id);
             if(actorDetails == null)
             {
-                return View("Not Found");
+                return View("NotFound");
             }
             return View(actorDetails);  
         }
@@ -76,10 +77,10 @@ namespace OnlineShop.Controllers
             var actordata  = await _service.GetById(id);  
             if(actordata == null)
             {
-                return View("Not fount");
+                return View("NotFount");
             }
-            return View(actordata); 
-        
+            return View(actordata);
+
         }
 
         [HttpPost]
@@ -89,7 +90,7 @@ namespace OnlineShop.Controllers
             var tempActor = await _service.GetById(id);
             if (tempActor == null)
             {
-                return View("Not Found");
+                return View("NotFound");
             }
             _service.Delete(tempActor);
             return RedirectToAction(nameof(Index));

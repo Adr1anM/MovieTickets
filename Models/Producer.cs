@@ -6,7 +6,7 @@ namespace OnlineShop.Models
     {
 
         [Key]
-        public int Id { get; set; }
+        public int Id { get; set; }      
 
         [Display(Name = "Profile Picture")]
         public string? ProfilePicture { get; set; }
@@ -19,7 +19,7 @@ namespace OnlineShop.Models
 
         //Relationships
 
-        public List<Movie> Movies { get; set; }
+        public List<Movie>? Movies { get; set; }
 
     }
 }

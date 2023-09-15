@@ -1,7 +1,7 @@
-﻿@model Actor
+﻿@model Cinema
 
 @{
-    ViewData["Title"] = "Delete Actor";
+    ViewData["Title"] = "Delete Cinema";
 }
 
 <div class="row text">
@@ -17,19 +17,19 @@
                         <img class="border-info rounded-circle" style="max-width: 150px" id="ProfilePicturePreview"/>
                     </div>
                     <div class="form-group">
-                        <label asp-for="ProfilePicture" class="control-label"></label>
-                        <input  asp-for="ProfilePicture" class="form-control" readonly/>
-                        <span asp-validation-for="ProfilePicture" class="text-danger"></span>
+                        <label asp-for="Logo" class="control-label"></label>
+                        <input  asp-for="Logo" class="form-control" readonly/>
+                        <span asp-validation-for="Logo" class="text-danger"></span>
                     </div>   
                     <div class="form-group">
-                        <label asp-for="FullName" class="control-label"></label>
-                        <input  asp-for="FullName" class="form-control" readonly/>
-                        <span asp-validation-for="FullName" class="text-danger"></span>
+                        <label asp-for="Name" class="control-label"></label>
+                        <input  asp-for="Name" class="form-control" readonly/>
+                        <span asp-validation-for="Name" class="text-danger"></span>
                     </div>  
                     <div class="form-group">
-                        <label asp-for="Bio" class="control-label"></label>
-                        <input  asp-for="Bio" class="form-control" readonly/>
-                        <span asp-validation-for="Bio" class="text-danger"></span>
+                        <label asp-for="Description" class="control-label"></label>
+                        <input  asp-for="Description" class="form-control" readonly/>
+                        <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
 
                     <div class=" form-group">

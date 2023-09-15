@@ -1,14 +1,28 @@
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Data;
-using OnlineShop.Data.Services;
+using OnlineShop.Data.AbstractAuthRepo;
+using OnlineShop.Data.AuthReopo;
+using OnlineShop.Data.Base;
+
+using OnlineShop.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetSection("ConnectionStrings:DefaultConnectionString").Value));
-builder.Services.AddScoped<IActorsService, ActorsService>();
+
+builder.Services.AddIdentity<UserModel, IdentityRole>()
+.AddEntityFrameworkStores<AppDbContext>()
+.AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(op => op.LoginPath = "/UserAuthentication/Login");
+
+builder.Services.AddScoped<IUserAutheticationService,UserAuthenticationService>();
+//builder.Services.AddScoped<IActorsService, ActorsService>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 var app = builder.Build();
 
@@ -26,11 +40,13 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 AppDBInitializer.Seed(app);
 app.Run();
 
