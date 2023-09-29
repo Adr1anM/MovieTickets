@@ -6,11 +6,11 @@ using OnlineShop.Models;
 
 namespace OnlineShop.Data
 {
-    public class AppDbContext: IdentityDbContext<UserModel>   
+    public class AppDbContext: IdentityDbContext
     { 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-
+                
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -43,7 +43,7 @@ namespace OnlineShop.Data
         public DbSet<Actor_Movie> Actors_Movies { get; set; }
         public DbSet<Producer> Producers { get; set; }
         public DbSet<Cinema> Cinemas { get; set; }
-        public DbSet<UserModel> Userss { get; set; }
+
       
     }
 }

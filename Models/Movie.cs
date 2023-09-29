@@ -34,7 +34,7 @@ namespace OnlineShop.Models
 
         //Cinema 
         [ForeignKey("CinemaId")]
-        public int? CinemaId { get; set; }
+        public int? CinemaId     { get; set; }
         
         public Cinema? Cinema { get; set; }
 
