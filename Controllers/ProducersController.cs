@@ -26,13 +26,13 @@ namespace OnlineShop.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create([Bind("FullName,ProfilePicture,Bio")] Producer producer)
+        public async Task<IActionResult> Create([Bind("FullName,ProfilePicture,Bio")] Producer producer)
         {
             if (!ModelState.IsValid)
             {
                 return View(producer);
             }
-            _service.Add(producer);
+            await _service.Add(producer);
             return RedirectToAction(nameof(Index));
         }
 

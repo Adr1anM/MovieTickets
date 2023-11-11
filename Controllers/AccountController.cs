@@ -7,10 +7,10 @@ namespace OnlineShop.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signintManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signintManager;
 
-        public AccountController(UserManager<IdentityUser> userManager,SignInManager<IdentityUser> signintManager)
+        public AccountController(UserManager<ApplicationUser> userManager,SignInManager<ApplicationUser> signintManager)
         {
             _userManager = userManager;   
             _signintManager = signintManager;
@@ -34,11 +34,8 @@ namespace OnlineShop.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser
-                {
-                    UserName = model.Email,
-                    Email = model.Email,
-                };
+
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email }; 
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
@@ -77,6 +74,8 @@ namespace OnlineShop.Controllers
 
             }
             return View(user);
+
+        
 
         }
         public async Task<IActionResult> Logout()

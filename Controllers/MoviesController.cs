@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -10,19 +12,23 @@ using OnlineShop.Data.Enum;
 using OnlineShop.Models;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace OnlineShop.Controllers
 {
     public class MoviesController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IdentityDbContext _identityDbContext;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-
-        public MoviesController(AppDbContext context)
+        public MoviesController(UserManager<ApplicationUser> userManager , AppDbContext context)
         {
+            _userManager = userManager;
             _context = context;
-
         }
+
+      
 
         public async Task<IActionResult> Index()
         {
@@ -32,27 +38,9 @@ namespace OnlineShop.Controllers
         }
 
 
-        public List<Producer> GetAllProducers() => _context.Producers.ToList();
-        public List<Cinema> GetAllCinemas() => _context.Cinemas.ToList();
-        //public IActionResult Create(Movie model, int id)
-        //{
-        //    List<Producer> producers = GetAllProducers();
-        //    List<Cinema> cinemas = GetAllCinemas();
-
-        //    model.ProducerId = id;  
-        //    _context.Movies.Add(model); 
-
-        //    if (producers.Count > 0)
-        //    {
-
-        //    ViewBag.DropdownItems = new SelectList(producers);
-
-
-        //    return View();
-        //    }
-
-        //    return RedirectToAction("Index");
-        //}
+        public async Task<List<Producer>> GetAllProducers() => await _context.Producers.ToListAsync();
+        public async Task<List<Cinema>> GetAllCinemas() => await _context.Cinemas.ToListAsync();
+  
         public static IEnumerable<SelectListItem> GetEnumValues<TEnum>()
         {
             return Enum.GetValues(typeof(TEnum))
@@ -64,14 +52,13 @@ namespace OnlineShop.Controllers
                        })
                        .ToList();
         }
-
-
-        public IActionResult Create()
+           
+        public async Task<IActionResult> Create()
         {
 
-            List<Cinema> cinemas = GetAllCinemas();
-            List<Producer> producers = GetAllProducers();
-            List<SelectListItem> MovieCategoryList;
+            List<Cinema> cinemas = await GetAllCinemas();
+            List<Producer> producers = await GetAllProducers();
+            List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> MovieCategoryList;
 
 
             Dictionary<int, string> cinemDropdownValues = new Dictionary<int, string>();
@@ -91,8 +78,8 @@ namespace OnlineShop.Controllers
             ViewBag.DropDownValues = prodDropdownValues;
             ViewBag.CinemaDropDownValues = cinemDropdownValues;
 
-            IEnumerable<SelectListItem> enumValues = GetEnumValues<MovieCategory>();
-            ViewBag.EnumSelectList = enumValues;
+            
+            ViewBag.EnumSelectList = GetEnumValues<MovieCategory>();
 
             return View();
 
@@ -101,14 +88,6 @@ namespace OnlineShop.Controllers
         [HttpPost]
         public IActionResult Create(Movie model)
         {
-            System.Diagnostics.Debug.WriteLine("$$$$*****$$$$$$$$$$$$$$$$");
-            System.Diagnostics.Debug.WriteLine(model.Name +"  "+model.CinemaId);
-            System.Diagnostics.Debug.WriteLine(model.Description + "  " + model.ProducerId);
-            System.Diagnostics.Debug.WriteLine(model.StartDate);
-            System.Diagnostics.Debug.WriteLine(model.EndDate);
-            System.Diagnostics.Debug.WriteLine(model.MovieCategory);
-            System.Diagnostics.Debug.WriteLine(model.ImageUrl);
-            System.Diagnostics.Debug.WriteLine("$$$$*****$$$$$$$$$$$$$$$$");
 
             if (!ModelState.IsValid)
             {
@@ -131,21 +110,94 @@ namespace OnlineShop.Controllers
                 {
                     return View(moviesResult);
                 }
+               
               
             }
             return RedirectToAction("Index");
+        }
+
+
+        [Authorize]
+        public  IActionResult PressCart()
+        {
+            List<Movie> movies = new List<Movie>();
+
+            var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var items = _context.ShoppingCarts.Where(x => x.UserId == userid);
+
+            var moviesId = new List<int>(); 
+
+            foreach(ShoppingCart item in items)
+            {
+                moviesId.Add(item.MovieId);
+            }
+
+            movies = _context.Movies.Where(b => moviesId.Contains(b.Id)).ToList();
+
+            foreach(Movie item in movies)
+            {
+                System.Diagnostics.Debug.WriteLine("********&&&&&&*********");
+
+                System.Diagnostics.Debug.WriteLine(item.Name+"|"+item.Id +"|"+item.Price);
+                System.Diagnostics.Debug.WriteLine(userid);
+                System.Diagnostics.Debug.WriteLine("********&&&&&&*********");
+            }
+
+            return View(movies);
+        }
+
+
+        [Authorize]
+        [HttpPost]
+        public  IActionResult DeleteItemInCard(int id)
+        {
+
+            var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var item =  _context.ShoppingCarts.FirstOrDefault(x => x.Id == id && x.UserId ==userid );
+            if(item is not null)
+            {
+                try
+                {
+                    _context.ShoppingCarts.Remove(item);
+                    _context.SaveChanges();     
+                }
+                catch 
+                {
+                    return View("NotFound");
+                }
+            }
+          
+            return View("Index"); 
+        }
+
+
+
+        
+        [Authorize]
+        [HttpPost]
+        public IActionResult AddItemToCart(int movieId)
+        {
+           
+            var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            System.Diagnostics.Debug.WriteLine("********&&&&&&*********");
+            System.Diagnostics.Debug.WriteLine(movieId.ToString());
+            System.Diagnostics.Debug.WriteLine(userid);
+            System.Diagnostics.Debug.WriteLine("********&&&&&&*********");
+
+
+            if (userid != null && movieId > 0)
+            {
+                _context.ShoppingCarts.Add(new ShoppingCart { UserId = userid, MovieId = movieId });
+                _context.SaveChanges();
+                TempData["AlertMessage"] = "Movie Added Successfuly";
+                return RedirectToAction("Index");
+            }
+
+            return View("Index");
 
         }
-     
-
-        //[HttpPost]
-        //public async Task<IActionResult> Create(int id)
-        //{
-
-
-        //}
-
-
 
 
     }

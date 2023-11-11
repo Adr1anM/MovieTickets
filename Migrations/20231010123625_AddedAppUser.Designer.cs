@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineShop.Data;
 
@@ -11,9 +12,11 @@ using OnlineShop.Data;
 namespace OnlineShop.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231010123625_AddedAppUser")]
+    partial class AddedAppUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -318,6 +321,9 @@ namespace OnlineShop.Migrations
                     b.Property<int?>("ProducerId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ShopingCartId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
@@ -326,6 +332,8 @@ namespace OnlineShop.Migrations
                     b.HasIndex("CinemaId");
 
                     b.HasIndex("ProducerId");
+
+                    b.HasIndex("ShopingCartId");
 
                     b.ToTable("Movies");
                 });
@@ -364,12 +372,9 @@ namespace OnlineShop.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MovieId");
 
                     b.HasIndex("UserId");
 
@@ -458,26 +463,22 @@ namespace OnlineShop.Migrations
                         .HasForeignKey("ProducerId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("OnlineShop.Models.ShoppingCart", "ShopingCart")
+                        .WithMany("Movies")
+                        .HasForeignKey("ShopingCartId");
+
                     b.Navigation("Cinema");
 
                     b.Navigation("Producer");
+
+                    b.Navigation("ShopingCart");
                 });
 
             modelBuilder.Entity("OnlineShop.Models.ShoppingCart", b =>
                 {
-                    b.HasOne("OnlineShop.Models.Movie", "Movie")
-                        .WithMany("ShopingCarts")
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("OnlineShop.Models.ApplicationUser", "User")
-                        .WithMany("ShoppingCarts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Movie");
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -485,11 +486,6 @@ namespace OnlineShop.Migrations
             modelBuilder.Entity("OnlineShop.Models.Actor", b =>
                 {
                     b.Navigation("Actors_Movies");
-                });
-
-            modelBuilder.Entity("OnlineShop.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("ShoppingCarts");
                 });
 
             modelBuilder.Entity("OnlineShop.Models.Cinema", b =>
@@ -500,11 +496,14 @@ namespace OnlineShop.Migrations
             modelBuilder.Entity("OnlineShop.Models.Movie", b =>
                 {
                     b.Navigation("Actors_Movies");
-
-                    b.Navigation("ShopingCarts");
                 });
 
             modelBuilder.Entity("OnlineShop.Models.Producer", b =>
+                {
+                    b.Navigation("Movies");
+                });
+
+            modelBuilder.Entity("OnlineShop.Models.ShoppingCart", b =>
                 {
                     b.Navigation("Movies");
                 });

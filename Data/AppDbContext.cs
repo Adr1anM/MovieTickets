@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -6,7 +7,7 @@ using OnlineShop.Models;
 
 namespace OnlineShop.Data
 {
-    public class AppDbContext: IdentityDbContext
+    public class AppDbContext: IdentityDbContext<ApplicationUser>
     { 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -34,6 +35,21 @@ namespace OnlineShop.Data
                 .WithOne(b => b.Producer)
                 .OnDelete(DeleteBehavior.SetNull);
 
+
+            modelBuilder.Entity<ShoppingCart>()
+                .HasOne(b => b.Movie)
+                .WithMany(b => b.ShopingCarts)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ShoppingCart>()
+                .HasOne(b => b.User)
+                .WithMany(c => c.ShoppingCarts)
+                .OnDelete(DeleteBehavior.Cascade);
+
+    
+
+
+
             base.OnModelCreating(modelBuilder);
 
         }
@@ -43,6 +59,7 @@ namespace OnlineShop.Data
         public DbSet<Actor_Movie> Actors_Movies { get; set; }
         public DbSet<Producer> Producers { get; set; }
         public DbSet<Cinema> Cinemas { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
 
       
     }

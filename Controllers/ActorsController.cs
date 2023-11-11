@@ -27,13 +27,13 @@ namespace OnlineShop.Controllers
             return View();
         }
         [HttpPost]
-        public  IActionResult Create([Bind("FullName,ProfilePicture,Bio")]Actor actor)
+        public async  Task<IActionResult> Create([Bind("FullName,ProfilePicture,Bio")]Actor actor)
         {
             if (!ModelState.IsValid)
             {
                 return View(actor); 
             }
-            _service.Add(actor);    
+            await _service.Add(actor);    
             return RedirectToAction(nameof(Index));   
         }
 

@@ -1,6 +1,5 @@
 ﻿@model Movie
 
-
 @{
     ViewData["Title"] = "Create a new Movie";
 
@@ -37,22 +36,13 @@
                     @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Description)
                     </div>
-                   @* <div class="form-group" style="margin-bottom: 10px;">
-                    @Html.LabelFor(model => model.StartDate)
-                    @Html.TextBoxFor(model => model.StartDate, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.StartDate)
-                    </div>*@
+   
                     <div class="form-group">
                     <label asp-for="StartDate" class="control-label"></label>
                     <input asp-for="StartDate" class="form-control"/>
                     <span asp-validation-for="StartDate" class="text-danger"></span>
                     </div>
 
-                    @*<div class="form-group" style="margin-bottom: 10px;">
-                    @Html.LabelFor(model => model.EndDate) 
-                    @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.EndDate)
-                    </div>*@
                     <div class="form-group">
                     <label asp-for="EndDate" class="control-label"></label>
                     <input asp-for="EndDate" class="form-control"/>
@@ -66,15 +56,9 @@
                     </div>
     
                     <div class="form-group" style="margin-bottom: 10px;">
-                    @Html.DropDownListFor(model => model.MovieCategory, (SelectList)ViewBag.EnumSelectList, "Select movie categoryYYY")
+                    @Html.DropDownListFor(model => model.MovieCategory, (IEnumerable<SelectListItem>)ViewBag.EnumSelectList, "Select movie categoryYYY")
                     @Html.ValidationMessageFor(model => model.MovieCategory, "", new { @class = "text-danger" })
                     </div>
-
-                    @*<div class="form-group">
-                    <label asp-for="MovieCategory" class="control-label"></label>
-                    <select asp-for="MovieCategory" asp-items="Model.MovieCategory" class="form-control"></select> 
-                    <span asp-validation-for="MovieCategory" class="text-danger"></span>
-                    </div>*@
                      
                     <div class="form-group" style="margin-bottom: 10px;" >
                     @Html.DropDownListFor(model => model.CinemaId, new SelectList(ViewBag.CinemaDropDownValues, "Key", "Value"), "Select a Cinema")
@@ -102,68 +86,3 @@
 
 
 
-@*<form asp-action="Create" id="CreateForm">
- <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                   
-                    <div class="form-group text-center">
-                        <img class="border-info rounded-circle" style="max-width: 150px" id="ProfilePicturePreview"/>
-                    </div>
-                     <div class="form-group">
-                        <label asp-for="ImageUrl" class="control-label"></label>
-                        <input  asp-for="ImageUrl" class="form-control"/>
-                        <span asp-validation-for="ImageUrl" class="text-danger"></span>
-                    </div>  
-                    <div class="form-group">
-                        <label asp-for="Name" class="control-label"></label>
-                        <input  asp-for="Name" class="form-control"/>
-                        <span asp-validation-for="Name" class="text-danger"></span>
-                    </div>   
-                    <div class="form-group">
-                        <label asp-for="Description" class="control-label"></label>
-                        <input  asp-for="Description" class="form-control"/>
-                        <span asp-validation-for="Description" class="text-danger"></span>
-                    </div>  
-                    <div class="form-group">
-                        <label asp-for="StartDate" class="control-label"></label>
-                        <input  asp-for="StartDate" class="form-control"/>
-                        <span asp-validation-for="StartDate" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="EndDate" class="control-label"></label>
-                        <input  asp-for="EndDate" class="form-control"/>
-                        <span asp-validation-for="EndDate" class="text-danger"></span>
-                    </div>
-                    <div class="form-group" style="margin-bottom: 10px;" >
-                        <label asp-for="Price" class="control-label"></label>
-                        <input  asp-for="Price" class="form-control"/>
-                        <span asp-validation-for="Price" class="text-danger"></span>
-                    </div>Movie Category
-                   <div style="margin-bottom: 10px;">
-                        @Html.DropDownListFor(model => model.MovieCategory, (SelectList)ViewBag.EnumSelectList, "Select movie category")
-                        @Html.ValidationMessageFor(model => model.MovieCategory, "", new { @class = "text-danger" })
-                   </div>Cinema
-                   
-                    <div style="margin-bottom: 10px;">
-                      
-                        @Html.DropDownListFor(model => model.CinemaId, new SelectList(ViewBag.CinemaDropDownValues, "Key", "Value"), "Select a Cinema")
-                        
-                        
-                    </div>Producer
-                   
-                    <div style="margin-bottom: 10px;">
-                        
-                        @Html.DropDownListFor(model => model.ProducerId, new SelectList(ViewBag.DropDownValues, "Key", "Value"), "Select a Producer")
-                      
-             
-                    </div>
-
-                  
-                    
-                </form>
-                  <div class=" form-group">
-                        <input type="submit" value="Create" form = "CreateForm" class=" btn btn-outline-success float-right"/>
-                        <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
-                  </div>
-
-
-*@

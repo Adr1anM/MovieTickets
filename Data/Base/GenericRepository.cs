@@ -13,10 +13,10 @@ namespace OnlineShop.Data.Base
             _context = context;
         }
 
-        public void Add(T entity)
+        public async Task Add(T entity)
         {
             _context.Set<T>().Add(entity);
-           _context.SaveChanges();
+           await _context.SaveChangesAsync();
         
         }
 
@@ -31,7 +31,7 @@ namespace OnlineShop.Data.Base
             return await _context.Set<T>().ToListAsync();
         }
 
-        public async Task<T> GetById(int? id)
+        public async Task<T> GetById(int id)
         {
             return await _context.Set<T>().FindAsync(id);
         }

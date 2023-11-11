@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using OnlineShop.Data;
 using OnlineShop.Data.Base;
 using OnlineShop.Models;
+using OnlineShop.Models.Combined;
 
 namespace OnlineShop.Controllers
 {
@@ -17,25 +20,46 @@ namespace OnlineShop.Controllers
         } 
         public async Task<IActionResult> Index()
         {
-            var result = await _service.GetAll();
-            return View(result);    
+            Cinema cinema = new Cinema();
+            IEnumerable<Cinema> cinemaList = await _service.GetAll();
+
+            CinemaViewModel viewModel = new CinemaViewModel
+            {
+                Cinema = cinema,
+                Cinemas = cinemaList
+            };
+
+            return View(viewModel);    
         }
 
+        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
+
+        [Authorize]
         [HttpPost]
-        public IActionResult Create([Bind("Name,Logo,Description")] Cinema cinema)
+        public async Task<JsonResult> CreateWithModal(Cinema cinema)
         {
             if (!ModelState.IsValid)
             {
-                return View(cinema);
+                return Json(new
+                {
+                    status = "failure",
+                    formErrors = ModelState.Select(kvp => new { key = kvp.Key, errors = kvp.Value.Errors.Select(e => e.ErrorMessage) })
+                });
             }
-            _service.Add(cinema);
-            return RedirectToAction(nameof(Index));
+
+       
+            await _service.Add(cinema);
+            return Json("Product Details Saved");
+            
+
+
         }
 
+        [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
 
@@ -51,6 +75,7 @@ namespace OnlineShop.Controllers
 
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Logo,Description")] Cinema cinema)
         {
@@ -64,6 +89,7 @@ namespace OnlineShop.Controllers
 
         }
 
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             var cinemaData = await _service.GetById(id);
@@ -75,6 +101,7 @@ namespace OnlineShop.Controllers
 
         }
 
+        [Authorize]
         [HttpPost]
         [ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmation(int id)

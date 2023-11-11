@@ -9,12 +9,15 @@ namespace OnlineShop.Models
         public int Id { get; set; }      
 
         [Display(Name = "Profile Picture")]
+        [Required]
         public string? ProfilePicture { get; set; }
 
         [Display(Name = "Full Name")]
+        [Required]
         public string? FullName { get; set; }
 
         [Display(Name = "Biography")]
+        [Required]
         public string? Bio { get; set; }
 
         //Relationships

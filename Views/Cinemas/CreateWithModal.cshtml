@@ -1,0 +1,100 @@
+﻿@model Cinema
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation/1.19.3/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/JSPopup.js"></script>
+
+<!-- The Modal -->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            
+          
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Create New Item</h4>
+                <button type="button"  class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <input type="hidden" asp-for="Id" value="0"/>
+
+                <div class="mb-2">
+                     <label asp-for="Logo"></label>
+                     <input type="text" asp-for="Logo" class="form-control"
+                     placeholder="Logo"/>
+                     <span asp-validation-for="Logo" class="text-danger"></span>
+                </div>
+
+                <div class="mb-2">
+                <label asp-for="Name"></label>
+                     <input type="text" asp-for="Name" class="form-control"
+                     placeholder="Cinema Name"/>
+                     <span asp-validation-for="Name" class="text-danger"></span>
+                <div class="mb-2">
+
+                <label asp-for="Description"></label>
+                     <input type="text" asp-for="Description" class="form-control"
+                     placeholder="Cinema Description"/>
+                     <span asp-validation-for="Description" class="text-danger"></span>
+
+                </div>
+            </div>
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button class="btn btn-primary" id = "Save" type="submit" 
+                onclick="Insert();">Save</button>
+                
+                <button class="btn btn-success" id = "Update" style="display:none" type="submit" 
+                onclick="Update();">Save</button>
+                
+                <button class="btn btn-danger" data-bs-disnmiss="modal"
+                onclick="HideModal();">Close</button>
+            </div>
+            
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+//           $(document).ready(function () {
+//    $('#myForm').submit(function (e) {
+//        e.preventDefault();
+
+//        // Submit the form directly to the controller action
+//        var formData = $(this).serialize();
+
+//        // This will perform a POST request to the controller action
+//        $.post('@Url.Action("ValidateExample", "Example")', formData, function (data) {
+//            if (data.isValid) {
+//                // Handle successful submission
+//            } else {
+//                // Handle validation errors
+//                $.each(data.errors, function (fieldName, errorMessage) {
+//                    // Update error messages dynamically
+//                    $('[asp-validation-for="' + fieldName + '"]').text(errorMessage);
+//                });
+//            }
+//        });
+//    });
+//});
+
+function onChangeSuccess(data) {
+
+    if (data.status === "success") {
+        $("#myModal").modal('hide');
+        $("#message-area").html(data.view);
+    }
+    $.each(data.formErrors, function() {
+        $("[data-valmsg-for='" + this.key + "']").html(this.errors.join());
+    });
+}
+
+    </script>
+}
+
+
+

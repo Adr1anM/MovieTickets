@@ -4,7 +4,14 @@
     ViewData["Title"] = "List Of Movies";
 } 
 
-
+@if(TempData["AlertMessage"] != null)
+{
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.success('@TempData["AlertMessage"]')
+    </script>
+} 
 
     <div class = "row">
         @foreach (var item in Model)
@@ -55,16 +62,20 @@
                                     {
                                         <span class="badge bg-primary text-white">UPCOMING</span>
                                     }
+                        
 
                                 </p>
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <div class="cars-footer">
-                                <p class="card-text">
-                                    <a class="btn btn-outline-primary float-right"><i class="bi bi eye-fill"></i>Show Detail</a>
-                                    <a class="btn btn-success text-white"><i class="bi bg-cart-plus"></i>Add to Cart (Price @item.Price.ToString("c"))</a>
-                                </p>
+                            <div class="card-footer">
+                                <a class="btn btn-outline-primary float-right" ><i class="bi bi eye-fill"></i>Show Detail</a>
+                                <form method="post" asp-action="AddItemToCart">
+                                <input type="hidden" name="movieId" value="@item.Id" />
+                                <button type="submit" class="btn btn-success text-white">
+                                <i class="bi bg-cart-plus"></i>Add to Cart (Price @item.Price.ToString("c"))
+                                </button>
+                                </form>
                             </div>
                         </div>    
                     </div>
