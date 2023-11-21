@@ -7,7 +7,7 @@ namespace OnlineShop.Data.Base
         Task<IEnumerable<T>> GetAll();
         Task<T> GetById(int id);
         Task Add(T entity);
-        Task<T> Update(int id, T entity);
-        void Delete(T entity);
+        Task<T> Update(T entity);
+        Task Delete(T entity);
     }
 }

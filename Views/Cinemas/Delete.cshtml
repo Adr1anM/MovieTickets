@@ -1,60 +1,86 @@
 ﻿@model Cinema
 
-@{
-    ViewData["Title"] = "Delete Cinema";
-}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation/1.19.3/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/JSPopup.js"></script>
 
-<div class="row text">
-    <div class="col-md-8 offset-2">
-        <p>
-            <h1>Confirm Delete</h1>
-        </p>
 
-        <div class="row">
-            <div class="col-md-8 offset-2">  
-                
-                    <div class="form-group text-center">
-                        <img class="border-info rounded-circle" style="max-width: 150px" id="ProfilePicturePreview"/>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Logo" class="control-label"></label>
-                        <input  asp-for="Logo" class="form-control" readonly/>
-                        <span asp-validation-for="Logo" class="text-danger"></span>
-                    </div>   
-                    <div class="form-group">
-                        <label asp-for="Name" class="control-label"></label>
-                        <input  asp-for="Name" class="form-control" readonly/>
-                        <span asp-validation-for="Name" class="text-danger"></span>
-                    </div>  
-                    <div class="form-group">
-                        <label asp-for="Description" class="control-label"></label>
-                        <input  asp-for="Description" class="form-control" readonly/>
-                        <span asp-validation-for="Description" class="text-danger"></span>
-                    </div>
 
-                    <div class=" form-group">
-                       <form asp-action="Delete">
-                        <input type="hidden" asp-for="Id"/>
-                        <input type="submit" value="Confirm" class="btn btn-danger float-right"/>
-                        <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
-                       </form>
-                     
+<!-- The Modal -->
+<div class="modal fade" id="deleteModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
 
-                    </div>
-                              
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Cinema</h4>
+                <button type="button" onclick="HideDeleteModal();" class="close" data-dismiss="modal">&times;</button>
             </div>
+
+            <form id="deleteForm">
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <input id="id" type="hidden" asp-for="Id" value="0" />
+
+                    <div class="mb-2">
+                        <label asp-for="Logo"></label>
+                        <input id="LogoId" type="text" asp-for="Logo" class="form-control"
+                               placeholder="Logo" readonly />
+                        <span asp-validation-for="Logo" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-2">
+                        <label asp-for="Name"></label>
+                        <input id="NameId" type="text" asp-for="Name" class="form-control"
+                               placeholder="Cinema Name" readonly/>
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="mb-2">
+                        <label asp-for="Description"></label>
+                        <input id="descriptionId" type="text" asp-for="Description" class="form-control"
+                               placeholder="Cinema Description" readonly/>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+
+                    </div>
+                </div>
+            </form>
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button class="btn btn-danger" data-bs-disnmiss="modal"
+                        onclick="HideDeleteModal();">
+                    Close
+                </button>
+
+                <button class="btn btn-danger" data-bs-disnmiss="modal"
+                        onclick="Delete();">
+                    Delete
+                </button>
+            </div>
+
         </div>
     </div>
-
 </div>
 
-@section Scripts{
+@section Scripts {
     <script>
-        $(document).ready(function (){
-            var output = document.getElementById('ProfilePicturePreview')
-            output.src = $("#ProfilePicture").val();
-        })
 
-       
+        function onChangeSuccess(data) {
+
+            if (data.status === "success") {
+                $("#myModal").modal('hide');
+                $("#message-area").html(data.view);
+            }
+            $.each(data.formErrors, function () {
+                $("[data-valmsg-for='" + this.key + "']").html(this.errors.join());
+            });
+        }
+
     </script>
 }
+
+
+

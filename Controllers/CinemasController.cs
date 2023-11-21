@@ -47,72 +47,78 @@ namespace OnlineShop.Controllers
                 return Json(new
                 {
                     status = "failure",
-                    formErrors = ModelState.Select(kvp => new { key = kvp.Key, errors = kvp.Value.Errors.Select(e => e.ErrorMessage) })
+                    formErrors = ModelState.Select(kvp => new { key = kvp.Key, errors = kvp.Value?.Errors.Select(e => e.ErrorMessage) })
                 });
             }
 
        
             await _service.Add(cinema);
-            return Json("Product Details Saved");
-            
-
+            return Json("Product Details Saved");         
 
         }
 
-        [Authorize]
+        [Authorize]                                               
         public async Task<IActionResult> Edit(int id)
         {
 
             var cinemaDetails = await _service.GetById(id);
             if (cinemaDetails == null)
             {
-                return View("NotFound");
+                return Json( new
+                {
+                    status = "failure",
+                    formErrors = ModelState.Select(kvp => new { key = kvp.Key, errors = kvp.Value?.Errors.Select(e => e.ErrorMessage) })
+                });
             }
 
-            return View(cinemaDetails);
-
-            
+            return Json(cinemaDetails);     
 
         }
 
         [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Logo,Description")] Cinema cinema)
+        [HttpPost]  
+        public async Task<IActionResult> Update(Cinema cinema)
         {
             if (!ModelState.IsValid)
             {
-                return View(cinema);
+                return Json(new
+                {
+                    status = "failure",
+                    formErrors = ModelState.Select(kvp => new { key = kvp.Key, errors = kvp.Value?.Errors.Select(e => e.ErrorMessage) })    
+                });
             }
 
-            await _service.Update(id, cinema);
-            return RedirectToAction(nameof(Index));
-
+            await _service.Update(cinema);
+            return Json("Product Details Saved");
         }
 
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             var cinemaData = await _service.GetById(id);
-            if (cinemaData == null)
+            if (!ModelState.IsValid)
             {
-                return View("NotFount");
+                return Json(new
+                {
+                    status = "failure",
+                    formErrors = ModelState.Select(kvp => new { key = kvp.Key, errors = kvp.Value?.Errors.Select(e => e.ErrorMessage) })
+                });
             }
-            return View(cinemaData);
+
+            return Json(cinemaData); 
 
         }
 
         [Authorize]
         [HttpPost]
-        [ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirmation(int id)
+        public async Task<IActionResult> DeleteConfirmation(Cinema tempCinema)
         {
-            var tempCinema = await _service.GetById(id);
-            if (tempCinema == null)
+            if (!ModelState.IsValid)
             {
-                return View("NotFound");
+                return Json(new { status = "failure" });
             }
-            _service.Delete(tempCinema);
-            return RedirectToAction(nameof(Index));
+            await _service.Delete(tempCinema);
+            return Json("Product Details Saved");
 
 
         }

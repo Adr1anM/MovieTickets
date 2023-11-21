@@ -20,10 +20,10 @@ namespace OnlineShop.Data.Base
         
         }
 
-        public void Delete(T entity)
+        public async Task Delete(T entity)
         {
             _context.Set<T>().Remove(entity);
-            _context.SaveChanges(); 
+            await _context.SaveChangesAsync(); 
         }
 
         public async Task<IEnumerable<T>> GetAll()
@@ -36,7 +36,7 @@ namespace OnlineShop.Data.Base
             return await _context.Set<T>().FindAsync(id);
         }
 
-        public async Task<T> Update(int id, T entity)
+        public async Task<T> Update(T entity)
         {
             _context.Set<T>().Update(entity);
             await _context.SaveChangesAsync();

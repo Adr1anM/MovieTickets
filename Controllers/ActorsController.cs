@@ -60,14 +60,14 @@ namespace OnlineShop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult>Edit(int id,[Bind("Id,FullName,ProfilePicture,Bio")] Actor actor)
+        public async Task<IActionResult>Edit(Actor actor)
         {
             if(!ModelState.IsValid)
             {
                 return View(actor);
             }
 
-           await _service.Update(id, actor);
+           await _service.Update(actor);
            return RedirectToAction(nameof(Index)); 
 
         }
@@ -92,7 +92,7 @@ namespace OnlineShop.Controllers
             {
                 return View("NotFound");
             }
-            _service.Delete(tempActor);
+            await _service.Delete(tempActor);
             return RedirectToAction(nameof(Index));
 
             
