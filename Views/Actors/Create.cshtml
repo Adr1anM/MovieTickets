@@ -1,62 +1,89 @@
 ﻿@model Actor
 
-@{
-    ViewData["Title"] = "Create a new Actor";
-}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation/1.19.3/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/ActorsView.js"></script>
 
-<div class="row text">
-    <div class="col-md-8 offset-2">
-        <p>
-            <h1>Add a new Actor</h1>
-        </p>
+<!-- The Modal -->
+<div class="modal fade" id="actorModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
 
-        <div class="row">
-            <div class="col-md-8 offset-2">
-                <form asp-action="Create">
 
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                   
-                    <div class="form-group text-center">
-                        <img class="border-info rounded-circle" style="max-width: 150px" id="ProfilePicturePreview"/>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="ProfilePicture" class="control-label"></label>
-                        <input  asp-for="ProfilePicture" class="form-control"/>
-                        <span asp-validation-for="ProfilePicture" class="text-danger"></span>
-                    </div>   
-                    <div class="form-group">
-                        <label asp-for="FullName" class="control-label"></label>
-                        <input  asp-for="FullName" class="form-control"/>
-                        <span asp-validation-for="FullName" class="text-danger"></span>
-                    </div>  
-                    <div class="form-group">
-                        <label asp-for="Bio" class="control-label"></label>
-                        <input  asp-for="Bio" class="form-control"/>
-                        <span asp-validation-for="Bio" class="text-danger"></span>
-                    </div>
-
-                    <div class=" form-group">
-                        <input type="submit" value="Create" class=" btn btn-outline-success float-right"/>
-                        <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
-                    </div>
-                </form>
-               
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" id="Actormodaltitle"></h4>
+                <button type="button" onclick="HideModal();" class="close" data-dismiss="modal">&times;</button>
             </div>
+
+            <form id="ActorForm">
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <input type="hidden" asp-for="Id" value="0" />
+
+                    <div class="mb-2">
+                        <label asp-for="ProfilePicture"></label>
+                        <input type="text" asp-for="ProfilePicture" class="form-control"
+                               placeholder="Profile Picture" />
+                        <span asp-validation-for="ProfilePicture" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-2">
+                        <label asp-for="FullName"></label>
+                        <input type="text" asp-for="FullName" class="form-control"
+                               placeholder="Actor Name" />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-2">
+                        <label asp-for="Bio"></label>
+                        <input type="text" asp-for="Bio" class="form-control"
+                               placeholder="Actor Description" />
+                        <span asp-validation-for="Bio" class="text-danger"></span>
+
+                    </div>
+                </div>
+            </form>
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="Save" type="submit"
+                        onclick="Insert();">
+                    Save
+                </button>
+
+                <button class="btn btn-success" id="Update" style="display:none" type="submit"
+                        onclick="Update();">
+                    Save
+                </button>
+
+                <button class="btn btn-danger" data-bs-disnmiss="modal"
+                        onclick="HideModal();">
+                    Close
+                </button>
+            </div>
+
         </div>
     </div>
-
 </div>
 
-@section Scripts{
+@section Scripts {
     <script>
-        $(document).ready(function (){
-            var output = document.getElementById('ProfilePicturePreview')
-            output.src = $("#ProfilePicture").val();
-        })
 
-        $("#ProfilePicture").on("change",function(){
-            var output = document.getElementById('ProfilePicturePreview')
-            output.src = $(this).val();
-        })
+        function onChangeSuccess(data) {
+
+            if (data.status === "success") {
+                $("#myModal").modal('hide');
+                $("#message-area").html(data.view);
+            }
+            $.each(data.formErrors, function () {
+                $("[data-valmsg-for='" + this.key + "']").html(this.errors.join());
+            });
+        }
+
     </script>
 }
+
+
+

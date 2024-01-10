@@ -199,6 +199,14 @@ namespace OnlineShop.Controllers
 
         }
 
+        [HttpGet]
+        public async Task<IActionResult> OrderByDate()
+        {
+            var movies = await _context.Movies.Include(n => n.Cinema).OrderBy(n => n.StartDate).ToArrayAsync();
+
+            return View(movies);    
+        }
+
 
     }
 }

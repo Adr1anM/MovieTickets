@@ -1,16 +1,16 @@
 ﻿
-$('#btnAdd').on('click', function () {
+$('#btnAddActor').on('click', function () {
 
-    $('#myForm').trigger("reset");
-    $('#myModal').modal('show');
-    $('#modaltitle').text("Add Item");
+    $('#ActorForm').trigger("reset");
+    $('#actorModal').modal('show');
+    $('#Actormodaltitle').text("Add Actor");
 
 
 });
 
 function Insert() {
 
-    
+
     var formData = new Object();
     formData.id = $('#Id').val();
     formData.Logo = $('#Logo').val();
@@ -29,7 +29,7 @@ function Insert() {
 
                 $.each(response.formErrors, function () {
                     $("[data-valmsg-for=" + this.key + "]").html(this.errors.join("<br>"));
-                });     
+                });
             }
             else {
                 HideModal();
@@ -39,13 +39,13 @@ function Insert() {
         },
         error: function (response) {
             alert('Unable to save dataa');
-        }       
+        }
     });
 }
 
 function HideModal() {
     $('#myModal').modal('hide');
-   
+
 }
 function HideDeleteModal() {
     $('#deleteModal').modal('hide');
@@ -70,9 +70,9 @@ function Edit(id) {
                 alert('Data not available with id ' + id);
             }
             else {
-             
-                
-                let json_response = response; 
+
+
+                let json_response = response;
                 $('#myModal').modal('show');
                 $('#Save').css('display', 'none');
                 $('#Update').css('display', 'block');
@@ -91,7 +91,7 @@ function Edit(id) {
 
 function Update() {
 
-   
+
     var formData = new Object();
     formData.id = $('#Id').val();
     formData.Logo = $('#Logo').val();
@@ -105,7 +105,7 @@ function Update() {
         data: formData,
         type: 'post',
         success: function (response) {
-            if (response && response.status === "failure" && response.formErrors) { 
+            if (response && response.status === "failure" && response.formErrors) {
                 alert('Unable to save data');
 
                 $(".text-danger").html("");
@@ -144,7 +144,7 @@ function Remove(id) {
                 alert('Data not available with id ' + id);
             }
             else {
-                
+
                 $('#deleteModal').modal('show');
                 $('#Save').css('display', 'none');
                 $('#Update').css('display', 'block');

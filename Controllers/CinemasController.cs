@@ -33,12 +33,6 @@ namespace OnlineShop.Controllers
         }
 
         [Authorize]
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        [Authorize]
         [HttpPost]
         public async Task<JsonResult> CreateWithModal(Cinema cinema)
         {
@@ -89,7 +83,7 @@ namespace OnlineShop.Controllers
             }
 
             await _service.Update(cinema);
-            return Json("Product Details Saved");
+            return Json("Product Details Updated");
         }
 
         [Authorize]
@@ -101,14 +95,12 @@ namespace OnlineShop.Controllers
                 return Json(new
                 {
                     status = "failure",
-                    formErrors = ModelState.Select(kvp => new { key = kvp.Key, errors = kvp.Value?.Errors.Select(e => e.ErrorMessage) })
                 });
             }
 
             return Json(cinemaData); 
 
         }
-
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> DeleteConfirmation(Cinema tempCinema)
@@ -118,9 +110,9 @@ namespace OnlineShop.Controllers
                 return Json(new { status = "failure" });
             }
             await _service.Delete(tempCinema);
-            return Json("Product Details Saved");
+            return Json("Product Details Deleted");
 
 
-        }
+        }   
     }
 }
